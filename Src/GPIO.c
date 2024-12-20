@@ -1,3 +1,4 @@
+#include "defines.h"
 #include "GPIO.h"
 #include <stdint.h>
 #include <stdbool.h>
@@ -20,10 +21,6 @@ typedef struct {
 	uint32_t reserved;
 	volatile uint32_t SECCFGR;
 } GPIO;
-
-
-#define RCC_AHBENR2 *((volatile uint32_t) 0x4002104C)
-#define GPIOE ((GPIO *) 0x42021000)
 
 
 uint32_t reset_matrix[8] = {0};
@@ -78,7 +75,7 @@ uint32_t walking_man_3[8] = {
 
 // uses PE3
 void init_GPIOE_P3(void) {
-	RCC_AHBENR2 |= 1 << 4;
+	RCC_AHB2ENR |= 1 << 4;
 	GPIOE->MODER &= ~(0b11 << (3*2));
 	GPIOE->MODER |= (0b01 << (3*2));
 }

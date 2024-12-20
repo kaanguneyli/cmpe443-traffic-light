@@ -1,0 +1,3 @@
+../Src/ADC.c:14:6:init_ADC	3
+../Src/ADC.c:34:6:ADC1_2_IRQHandler	4
+../Src/ADC.c:50:6:get_brightness	1

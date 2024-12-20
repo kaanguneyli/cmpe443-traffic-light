@@ -1,185 +1,7 @@
-/*
 #include <stdint.h>
-
-#if !defined(__SOFT_FP__) && defined(__ARM_FP)
-  #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
-#endif
-*/
-
-/*
-#define wait_millisecond 1000
-uint32_t wait_counter=0;
- int main(void)
- {
- //TurnontheGPIOports.
- *((uint32_t*)(0x40021000+0x4C))|=0x07;
- //ToaccesstheRedLight.
- *((uint32_t*)(0x42020000+0x00))&=~(0x03<<(9*2));
- *((uint32_t*)(0x42020000+0x00))|=(0x01<<(9*2));
- //ToaccesstheBlueLight.
- *((uint32_t*)(0x42020400+0x00))&=~(0x03<<(7*2));
- *((uint32_t*)(0x42020400+0x00))|=(0x01<<(7*2));
- //ToaccesstheYellowLight.
- *((uint32_t*)(0x42020800+0x00))&=~(0x03<<(7*2));
- *((uint32_t*)(0x42020800+0x00))|=(0x01<<(7*2));
- while(1){
- int index;
- //TurnontheRedLight.
- *((uint32_t*)(0x42020000+0x14))|=(0x01<<9);
- //TurnontheBlueLight.
- *((uint32_t*)(0x42020400+0x14))|=(0x01<<7);
- //TurnontheYellowLight.
- *((uint32_t*)(0x42020800+0x14))|=(0x01<<7);
- //Uselesslooptomaketimeforthehumaneye.
- for(index=0;index<wait_millisecond*333;index++){
- wait_counter=wait_counter+1;
- }
-  // Turn off the Red Light.
-  *((uint32_t *) (0x42020000 + 0x14)) &= ~(0x01 << 9);
-  // Turn off the Blue Light.
-  *((uint32_t *) (0x42020400 + 0x14)) &= ~(0x01 << 7);
-  // Turn off the Yellow Light.
-  *((uint32_t *) (0x42020800 + 0x14)) &= ~(0x01 << 7);
-  // Useless loop to make time for the human eye.
-  for (index = 0; index < wait_millisecond * 333; index ++) {
-  wait_counter = wait_counter + 1;
-  }
-  }
-  }
-*/
-
-
-
-#include <stdint.h>
-
-#if !defined(__SOFT_FP__) && defined(__ARM_FP)
-  #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
-#endif
-
-/*
-#define wait_millisecond 1000
-uint32_t wait_counter=0;
- int main(void)
- {
- //TurnontheGPIOports.
- ((uint32_t)(0x40021000+0x4C))|=0x07;
- //ToaccesstheRedLight.
- ((uint32_t)(0x42020000+0x00))&=~(0x03<<(9*2));
- ((uint32_t)(0x42020000+0x00))|=(0x01<<(9*2));
- //ToaccesstheBlueLight.
- ((uint32_t)(0x42020400+0x00))&=~(0x03<<(7*2));
- ((uint32_t)(0x42020400+0x00))|=(0x01<<(7*2));
- //ToaccesstheYellowLight.
- ((uint32_t)(0x42020800+0x00))&=~(0x03<<(7*2));
- ((uint32_t)(0x42020800+0x00))|=(0x01<<(7*2));
- while(1){
- int index;
- //TurnontheRedLight.
- ((uint32_t)(0x42020000+0x14))|=(0x01<<9);
- //TurnontheBlueLight.
- ((uint32_t)(0x42020400+0x14))|=(0x01<<7);
- //TurnontheYellowLight.
- ((uint32_t)(0x42020800+0x14))|=(0x01<<7);
- //Uselesslooptomaketimeforthehumaneye.
- for(index=0;index<wait_millisecond*333;index++){
- wait_counter=wait_counter+1;
- }
-  // Turn off the Red Light.
-  *((uint32_t *) (0x42020000 + 0x14)) &= ~(0x01 << 9);
-  // Turn off the Blue Light.
-  *((uint32_t *) (0x42020400 + 0x14)) &= ~(0x01 << 7);
-  // Turn off the Yellow Light.
-  *((uint32_t *) (0x42020800 + 0x14)) &= ~(0x01 << 7);
-  // Useless loop to make time for the human eye.
-  for (index = 0; index < wait_millisecond * 333; index ++) {
-  wait_counter = wait_counter + 1;
-  }
-  }
-  }
-*/
-
-
-
-
-// Our structs
-typedef struct {
-	 volatile uint32_t CR1; //0
-	 volatile uint32_t CR2; //4
-	 volatile uint32_t SMCR; //8
-	 volatile uint32_t DIER; //C
-	 volatile uint32_t SR; //10
-	 volatile uint32_t EGR; //14
-	 volatile uint32_t CCMR1; //18
-	 uint32_t reserved1; //1C
-	 volatile uint32_t CCER; //20
-	 volatile uint32_t CNT; //24
-	 volatile uint32_t PSC; //28
-	 volatile uint32_t ARR; //2C
-	 volatile uint32_t RCR; //30
-	 volatile uint32_t CCR1; //34
-	 volatile uint32_t CCR2; //38
-	 uint32_t reserved2[2]; //3C 40
-	 volatile uint32_t BDTR; //44
-	 volatile uint32_t DCR; //48
-	 volatile uint32_t DMAR; //4C
-	 volatile uint32_t OR1; //50
-	 uint32_t reserved3[3]; //54 58 5C
-	 volatile uint32_t OR2; //60
-} TIM15_General_Purpose_Type;
-
-typedef struct {
-	 volatile uint32_t CR1; //0
-	 volatile uint32_t CR2; //4
-	 uint32_t reserved1; //8
-	 volatile uint32_t DIER; //C
-	 volatile uint32_t SR; //10
-	 volatile uint32_t EGR; //14
-	 volatile uint32_t CCMR1; //18
-	 uint32_t reserved2; //1C
-	 volatile uint32_t CCER; //20
-	 volatile uint32_t CNT; //24
-	 volatile uint32_t PSC; //28
-	 volatile uint32_t ARR; //2C
-	 volatile uint32_t RCR; //30
-	 volatile uint32_t CCR1; //34
-	uint32_t reserved3[3]; //38 3C 40
-	 volatile uint32_t BDTR; //44
-	 volatile uint32_t DCR; //48
-	 volatile uint32_t DMAR; //4C
-	 volatile uint32_t OR1; //50
-	 uint32_t reserved4[3]; //54 58 5C
-	 volatile uint32_t OR2; //60
-} TIM16_17_General_Purpose_Type;
-
- typedef struct {
-	 volatile uint32_t MODER;
-	 volatile uint32_t OTYPER;
-	 volatile uint32_t OSPEEDR;
-	 volatile uint32_t PUPDR;
-	 volatile uint32_t IDR;
-	 volatile uint32_t ODR;
-	 volatile uint32_t BSRR;
-	 volatile uint32_t LCKR;
-	 volatile uint32_t AFRL;
-	 volatile uint32_t AFRH;
-	 volatile uint32_t BRR;
-	 uint32_t reserved;
-	 volatile uint32_t SECCFGR;
-} GPIO;
-
- // Our required addresses for accessing buses, GPIOs, Timers, etc.
- #define RCC_AHB2ENR *((volatile uint32_t *) 0x4002104C)
- #define RCC_APB1ENR1 *((volatile uint32_t *) 0x40021058)
- #define RCC_APB2ENR *((volatile uint32_t *) 0x40021060)
- #define ISER2 *((volatile uint32_t *) 0xE000E108) //read from cortex-m33 dgug
- #define GPIOA ((GPIO *) 0x42020000)
- #define GPIOB ((GPIO *) 0x42020400)
- #define GPIOC ((GPIO *) 0x42020800)
- #define GPIOD ((GPIO *) 0x42020C00)
- #define GPIOE ((GPIO *) 0x42021000)
- #define TIM15 ((TIM15_General_Purpose_Type *) 0x40014000)
- #define TIM16 ((TIM16_17_General_Purpose_Type *) 0x40014400)
- #define TIM17 ((TIM16_17_General_Purpose_Type *) 0x40014800)
+#include "defines.h"
+#include "GPIO.h"
+#include "ICOC.h"
 
  // Variables used during our calculations
  uint8_t state = 0;
@@ -193,6 +15,8 @@ typedef struct {
  uint32_t min_distance = 1000;
  uint32_t max_distance = 2000;
  uint8_t measuring = 0;
+
+ uint32_t distance_measured = 0;
 //uint8_t isHandInRange = 0;
 //uint8_t isHandInRange_Read = 0;
 
@@ -228,6 +52,7 @@ typedef struct {
 			 // Distance calculation (in pulses)
 			 number_of_pulses_in_between = (number_of_overflows_in_between * ((TIM15->ARR) + 1)) - time_start + time_end;
 			 distance_in_centimeters = number_of_pulses_in_between * 17 / 1000;
+			 distance_measured = 1;
 			 measuring = 0;
 		 }
 	 }
@@ -268,7 +93,7 @@ typedef struct {
 	 // end PS 9@Cmpe443
 }
 
- void init_GPIO(void) {
+ void init_GPIO_ICOC(void) {
 	 ////////////////////////////////////////
 	 // --Part 1: Setting the GPIO--
 	 ////////////////////////////////////////
@@ -285,6 +110,10 @@ typedef struct {
 	 GPIOB->MODER &= ~(0b10 << (11 * 2));
 	 GPIOB->MODER |= 0b01 << (11 * 2);
 	 // start PS 9@Cmpe443
+
+	 GPIOB->MODER &= ~(0b10 << (7 * 2));
+	 GPIOB->MODER |= 0b01 << (7 * 2);
+
 	 GPIOC->MODER &= ~(0b10 << (7 * 2));
 	 GPIOC->MODER |= 0b01 << (7 * 2);
 
@@ -366,17 +195,15 @@ typedef struct {
 	 TIM15->CR1 |= 1;
  }
 
- void __enable_interrupts(void) {
-	 ////////////////////////////////////////
-	 // --Part 4: Enable interrupts with inline Assembly + wait--
-	 ////////////////////////////////////////
 
-	 // Enable all interrupts that are configured
-	 __asm volatile(
-			 "mov r0, #0 \n\t"
-			 "msr primask, r0 \n\t"
-	 );
- }
+int isPedestrianInRange(void) {
+if (distance_measured) {
+		distance_measured = 0;
+		return ((1 <= distance_in_centimeters) && (distance_in_centimeters <= 15));
+	}
+else return 0;
+}
+
 
  void distance_check(void) {
 	 // Calculating if the object is in desired range (in terms of clock cycles, conversions are done at the beginning of our code)
@@ -386,7 +213,7 @@ typedef struct {
 	 //	  //GPIOA->ODR |= (1 << 9); // Open the output light (for debugging purposes)
 	 //	  GPIOB->ODR |= (1 << 10); // Open the buzzer
 	 //}
-	 if ((17 <= distance_in_centimeters) && (distance_in_centimeters <= 34)) {
+	 if ((1 <= distance_in_centimeters) && (distance_in_centimeters <= 15)) {
 		 //isHandInRange = 1;
 		 GPIOB->ODR |= (1 << 10); // Open the buzzer
 	 }
@@ -407,24 +234,23 @@ typedef struct {
 	 measuring = 1;
  }
 
+ void getCrossingRequests(){
+	 if (measuring == 0) {
+	 	get_distance();
+	 }
+ }
+
  // start PS 9@Cmpe443
  // Our main code
+
+ /*
  int main(void) {
 	 init_GPIO();
 	 __enable_interrupts();
 
-
-	 // end PS 9@Cmpe443
-	 //GPIOB->ODR |= (1 << 11); // Opening up trigger (TRIG pin)
-	 // start PS 9@Cmpe443
-	 //get_distance();
-
-	 // Infinite loop
 	 while(1)
 	 {
-		 if (measuring == 0) {
-			 get_distance();
-		 }
+		 check_pedestrians();
 
 		 // end PS 9@Cmpe443
 		 //for (int i=0;i<1000000;i++){}
@@ -435,50 +261,7 @@ typedef struct {
 		 distance_check();
 	 }
 	 return 0;
-	 // end PS 9@Cmpe443
 }
 
-
-
-
-/*
-// PSUEDOCODE
- handle_interrupt() {
-	 if (input_interrupt()) {
-		 if (high_edge()) {
-			 start_measuring_time();
-		 }
-		 else {
-			 stop_measuring_time();
-		 }
-	 }
-	 if (output_interrupt()) {
-		 stop_trigger();
-	 }
-	 if (overflow()) {
-		 deactivate_buzzer();
-		 start_trigger();
-		 increment_overflow_counter();
-	 }
-	 if (overcapture()) {
-		 show_overcapture();
-	 }
- }
-
- main(){
-	 init_GPIO();
-	 init_TIMER();
-	 activate_interrupts();
-	 start_trigger();
-	 while(1) {
-		 convert_to_distance();
-		 if (distance_in_range()) {
-			 activate_buzzer();
-		 }
-		 else {
-			 deactivate_buzzer();
-		 }
-		 wait_for_interrupt();
-	 }
- }
 */
+

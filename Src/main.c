@@ -1,6 +1,8 @@
 #include <stdint.h>
 #include "defines.h"
 #include "TIMBasic.h"
+#include "ICOC.h"
+#include "GPIO.h"
 
 enum {
 	WAITING,
@@ -9,30 +11,8 @@ enum {
 };
 
 uint32_t t;
-int state;
-
-void initStateTimer(){
-	// turn on TIM6 clk
-	RCC_APB1ENR1 |= 1 << 4;
-	// set prescaler to 1 khz
-	TIM6->PSC = 3999;
-	TIM6->ARR = 999;
-	// enable interrupt
-	TIM6->DIER |= 1;
-	ISER1 |= 1 << 17;
-}
-
-void enableStateTimer(){
-	TIM6->CR1 |= 1;
-}
-
-void disableStateTimer(){
-	TIM6->CR1 &= ~(1);
-}
-
-void TIM6_IRQHandler(){
-	t++;
-}
+uint32_t temp;
+int currentState;
 
 void __enable_irq(){
 	__asm volatile(
@@ -43,55 +23,99 @@ void __enable_irq(){
 
 void init(){
 	initStateTimer();
+	init_GPIO_ICOC();
+	enableStateTimer();
 	__enable_irq();
 }
+
+void redOn(){ GPIOA->ODR |= 1 << 9; }
+void greenOn() { GPIOC->ODR |= 1 << 7; }
+void blueOn() {GPIOB->ODR |= 1 << 7; }
+
+void redOff(){ GPIOA->ODR &= ~(1 << 9); }
+void greenOff() { GPIOC->ODR &= ~(1 << 7); }
+void blueOff() {GPIOB->ODR &= ~(1 << 7); }
+
+void buzzerOn() { GPIOB->ODR |= 1 << 10; }
+void buzzerOff() { GPIOB->ODR &= ~(1 << 10); }
+
+int blueon = 0;
+void TIM6_IRQHandler(){
+	if (temp == 5){
+		temp = 0;
+		t++;
+		/*
+		if (!blueon) {
+			blueOn();
+			blueon = 1;
+		}
+		else {
+			blueOff();
+			blueon = 0;
+		}
+		*/
+	}
+	else temp++;
+	TIM6->SR = 0;
+	getCrossingRequests();
+}
+
 
 int main(void)
 {
 	// initialization functions go here
 	init();
 	// state initialization
-	state = WAITING;
+	currentState = WAITING;
+
 	while(1){
-		switch(state){
+		switch(currentState){
 		case WAITING: {
 			// buzzer off
 			// pedestrian light red
 			// car light green
 			t = 0;
-			if (isHandInRange == 1) {
-				state = REQUEST;
-				enableStateTimer();
-			}
-			else {
-				disableStateTimer();
+			if (isPedestrianInRange() != 0) {
+				currentState = REQUEST;
 			}
 			break;
 		}
 		case REQUEST: {
 			if (t < 3){
 				// buzzer on
+				buzzerOn();
+				// pedestrian light red
+				redOn();
+				blueOff();
+				greenOff();
+				// car light green
+			}
+			else if (t < 5){
+				// buzzer off
+				buzzerOff();
 				// pedestrian light red
 				// car light green
 			}
-			else if (t < 10){
+			else if (t < 13){
 				// buzzer off
 				// pedestrian light red
-				// car light green
-			}
-			else if (t < 12){
-				// buzzer off
-				// pedestrian light red
+				redOff();
+				greenOn();
 				// car light yellow
 
 			}
-			else if (t < 14) {
+			else if (t < 15) {
 				// buzzer off
 				// pedestrian light red
+				redOn();
+				greenOff();
 				// car light red
 			}
 			// t = 15
-			else state = CROSSING;
+			else {
+				currentState = WAITING;
+				redOff();
+			}
 			break;
 
 		}
@@ -110,12 +134,12 @@ int main(void)
 				// pedestrian light red
 				// car light green + yellow
 			}
-			else state = WAITING;
+			else currentState = WAITING;
+
 			break;
 		}
 		default: break;
 		}
-
 		__asm volatile("wfi");
 	}
 }

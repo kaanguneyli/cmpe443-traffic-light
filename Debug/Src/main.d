@@ -1,4 +1,6 @@
-Src/main.o: ../Src/main.c ../Inc/GPIO.h ../Inc/UART.h ../Inc/defines.h
-../Inc/GPIO.h:
-../Inc/UART.h:
+Src/main.o: ../Src/main.c ../Inc/defines.h ../Inc/TIMBasic.h \
+ ../Inc/ICOC.h ../Inc/GPIO.h
 ../Inc/defines.h:
+../Inc/TIMBasic.h:
+../Inc/ICOC.h:
+../Inc/GPIO.h:

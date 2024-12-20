@@ -8,6 +8,8 @@
 #ifndef TIMBASIC_H_
 #define TIMBASIC_H_
 
+#include <stdint.h>
+
 typedef struct {
 	volatile uint32_t CR1;
 	volatile uint32_t CR2;
@@ -21,7 +23,11 @@ typedef struct {
 	volatile uint32_t ARR;
 } TIMxBasicType;
 
+#define TIM6 ((volatile TIMxBasicType *) 0x40001000)
 
+void initStateTimer();
+void enableStateTimer();
+void disableStateTimer();
 
 
 #endif /* TIMBASIC_H_ */
