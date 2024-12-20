@@ -24,7 +24,7 @@ void initStateTimer(){
 
 void enableStateTimer(){
 	TIM6->CR1 |= 1;
-} otuzbir
+}
 
 void disableStateTimer(){
 	TIM6->CR1 &= ~(1);
