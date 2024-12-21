@@ -14,8 +14,10 @@ typedef struct {
 	volatile uint32_t PRESC; //2C
 } LPUARTType;
 
-#define RXNFE ((LPUART1->ISR & (1 << 5)) != 0)
-
 #define LPUART1 ((LPUARTType *) 0x40008000)
+#define RXNFE ((LPUART1->ISR & (1 << 5)) != 0)
+#define TC ((LPUART1->ISR & (1 << 6)) != 0)
 
 void LPUART1_initialization();
+bool send_message_NB(const char *string);
+bool send_message_B(char *string);
