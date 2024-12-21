@@ -409,34 +409,34 @@ typedef struct {
 
  // start PS 9@Cmpe443
  // Our main code
- int main(void) {
-	 init_GPIO();
-	 __enable_interrupts();
-
-
-	 // end PS 9@Cmpe443
-	 //GPIOB->ODR |= (1 << 11); // Opening up trigger (TRIG pin)
-	 // start PS 9@Cmpe443
-	 //get_distance();
-
-	 // Infinite loop
-	 while(1)
-	 {
-		 if (measuring == 0) {
-			 get_distance();
-		 }
-
-		 // end PS 9@Cmpe443
-		 //for (int i=0;i<1000000;i++){}
-
-
-		 // Wait for any interrputs
-		 __asm volatile("wfi");
-		 distance_check();
-	 }
-	 return 0;
-	 // end PS 9@Cmpe443
-}
+// int main(void) {
+//	 init_GPIO();
+//	 __enable_interrupts();
+//
+//
+//	 // end PS 9@Cmpe443
+//	 //GPIOB->ODR |= (1 << 11); // Opening up trigger (TRIG pin)
+//	 // start PS 9@Cmpe443
+//	 //get_distance();
+//
+//	 // Infinite loop
+//	 while(1)
+//	 {
+//		 if (measuring == 0) {
+//			 get_distance();
+//		 }
+//
+//		 // end PS 9@Cmpe443
+//		 //for (int i=0;i<1000000;i++){}
+//
+//
+//		 // Wait for any interrputs
+//		 __asm volatile("wfi");
+//		 distance_check();
+//	 }
+//	 return 0;
+//	 // end PS 9@Cmpe443
+//}
 
 
 

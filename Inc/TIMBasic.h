@@ -21,7 +21,9 @@ typedef struct {
 	volatile uint32_t ARR;
 } TIMxBasicType;
 
-
+void initStateTimer();
+void enableStateTimer();
+void disableStateTimer();
 
 
 #endif /* TIMBASIC_H_ */

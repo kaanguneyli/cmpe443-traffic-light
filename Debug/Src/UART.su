@@ -1,1 +1,7 @@
-../Src/UART.c:8:6:LPUART1_initialization	4	static
+../Src/UART.c:13:6:LPUART1_initialization	4	static
+../Src/UART.c:41:6:send_Message_recursive	4	static
+../Src/UART.c:53:6:send_message_NB	16	static
+../Src/UART.c:62:6:send_message_B	24	static
+../Src/UART.c:75:5:str2int	48	dynamic
+../Src/UART.c:84:6:process_json	2104	static
+../Src/UART.c:151:6:LPUART1_IRQHandler	16	static

@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdbool.h>
 #include "defines.h"
 #include "TIMBasic.h"
 
@@ -8,31 +9,11 @@ enum {
 	CROSSING
 };
 
-uint32_t t;
+extern uint32_t t;
+extern bool isHandInRange;
 int state;
 
-void initStateTimer(){
-	// turn on TIM6 clk
-	RCC_APB1ENR1 |= 1 << 4;
-	// set prescaler to 1 khz
-	TIM6->PSC = 3999;
-	TIM6->ARR = 999;
-	// enable interrupt
-	TIM6->DIER |= 1;
-	ISER1 |= 1 << 17;
-}
 
-void enableStateTimer(){
-	TIM6->CR1 |= 1;
-}
-
-void disableStateTimer(){
-	TIM6->CR1 &= ~(1);
-}
-
-void TIM6_IRQHandler(){
-	t++;
-}
 
 void __enable_irq(){
 	__asm volatile(
