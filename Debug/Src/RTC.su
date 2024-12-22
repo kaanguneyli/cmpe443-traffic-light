@@ -1,0 +1,14 @@
+../Src/RTC.c:13:16:bin2bcd	16	static
+../Src/RTC.c:17:16:bcd2bin	16	static
+../Src/RTC.c:21:16:RTC_Get_Sec	4	static
+../Src/RTC.c:22:16:RTC_Get_Min	4	static
+../Src/RTC.c:23:16:RTC_Get_Hour	4	static
+../Src/RTC.c:24:16:RTC_Get_MDay	4	static
+../Src/RTC.c:25:16:RTC_Get_Month	4	static
+../Src/RTC.c:26:16:RTC_Get_WDay	4	static
+../Src/RTC.c:27:16:RTC_Get_SYear	4	static
+../Src/RTC.c:29:13:SetTR	24	static
+../Src/RTC.c:47:13:SetDR	32	static
+../Src/RTC.c:67:6:RTC_Update	16	static
+../Src/RTC.c:90:6:RTC_Get	16	static
+../Src/RTC.c:100:6:RTC_Init	4	static

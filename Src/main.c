@@ -5,6 +5,8 @@
 #include "ICOC.h"
 #include "GPIO.h"
 #include "ADC.h"
+#include "RTC.h"
+#include "UART.h"
 
 enum {
 	WAITING,
@@ -30,6 +32,8 @@ void init(){
 	initStateTimer();
 	init_GPIO_ICOC();
 	init_ADC();
+	LPUART1_initialization();
+	RTC_Init();
 	enableStateTimer();
 	__enable_irq();
 }
@@ -46,11 +50,11 @@ void buzzerOn() { GPIOB->ODR |= 1 << 10; }
 void buzzerOff() { GPIOB->ODR &= ~(1 << 10); }
 
 int blueon = 0;
+Timestamp timestamp = {0};
 void TIM6_IRQHandler(){
 	if (temp == 4){
 		temp = 0;
 		t++;
-		/*
 		if (!blueon) {
 			blueOn();
 			blueon = 1;
@@ -59,8 +63,8 @@ void TIM6_IRQHandler(){
 			blueOff();
 			blueon = 0;
 		}
-		*/
 		measure_brightness();
+		RTC_Get(&timestamp);
 	}
 	else temp++;
 	TIM6->SR = 0;

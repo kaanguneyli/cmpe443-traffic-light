@@ -29,7 +29,6 @@ typedef struct {
 	uint8_t year;
 	uint8_t wday;
 	uint8_t yday;
-	uint8_t isdst;
 	uint8_t year_s; // year in short notation
 } Timestamp;
 
@@ -61,7 +60,8 @@ typedef struct {
 } RTCType;
 
 // call after LPUART1_Initialization
-void RTC_Init(Timestamp * timestamp);
+void RTC_Init();
+void RTC_Update(Timestamp * timestamp);
 void RTC_Get(Timestamp * timestamp);
 
 

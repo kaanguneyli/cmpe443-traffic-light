@@ -13,7 +13,7 @@
 #define RCC_APB2ENR *((volatile uint32_t *) 0x40021060)
 #define RCC_CCIPR1 *((volatile uint32_t *) 0x40021088)
 
-#define RCC_BDCR *((volatile uint32_t *) (0x40021000 + 0x090))
+#define RCC_BDCR *((volatile uint32_t *) (0x40021090))
 
 #define TIM6 ((volatile TIMxBasicType *) 0x40001000)
 
