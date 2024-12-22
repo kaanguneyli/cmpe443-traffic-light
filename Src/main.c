@@ -21,6 +21,24 @@ int currentState;
 extern bool read_brightness_flag;
 extern uint16_t brightness;
 
+int blueon = 0;
+Timestamp timestamp = {
+		.mon = 12,
+		.mday = 22,
+		.year_s = 24
+};
+
+void redOn(){ GPIOA->ODR |= 1 << 9; }
+void greenOn() { GPIOC->ODR |= 1 << 7; }
+void blueOn() {GPIOB->ODR |= 1 << 7; }
+
+void redOff(){ GPIOA->ODR &= ~(1 << 9); }
+void greenOff() { GPIOC->ODR &= ~(1 << 7); }
+void blueOff() {GPIOB->ODR &= ~(1 << 7); }
+
+void buzzerOn() { GPIOB->ODR |= 1 << 10; }
+void buzzerOff() { GPIOB->ODR &= ~(1 << 10); }
+
 void __enable_irq(){
 	__asm volatile(
 			"mov r0, #0\t\n"
@@ -34,23 +52,11 @@ void init(){
 	init_ADC();
 	LPUART1_initialization();
 	RTC_Init();
+	RTC_Update(&timestamp);
 	enableStateTimer();
 	__enable_irq();
 }
 
-void redOn(){ GPIOA->ODR |= 1 << 9; }
-void greenOn() { GPIOC->ODR |= 1 << 7; }
-void blueOn() {GPIOB->ODR |= 1 << 7; }
-
-void redOff(){ GPIOA->ODR &= ~(1 << 9); }
-void greenOff() { GPIOC->ODR &= ~(1 << 7); }
-void blueOff() {GPIOB->ODR &= ~(1 << 7); }
-
-void buzzerOn() { GPIOB->ODR |= 1 << 10; }
-void buzzerOff() { GPIOB->ODR &= ~(1 << 10); }
-
-int blueon = 0;
-Timestamp timestamp = {0};
 void TIM6_IRQHandler(){
 	if (temp == 4){
 		temp = 0;
@@ -81,8 +87,8 @@ int main(void)
 
 	while(1){
 
-		if (read_brightness_flag && (brightness > 100)) blueOn();
-		else blueOff();
+//		if (read_brightness_flag && (brightness > 100)) blueOn();
+//		else blueOff();
 
 		switch(currentState){
 		case WAITING: {

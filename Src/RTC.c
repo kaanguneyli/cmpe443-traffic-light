@@ -31,17 +31,20 @@ static void SetTR(uint8_t sec, uint8_t min, uint8_t hour){
 	uint8_t minBcd = bin2bcd(min);
 	uint8_t hourBcd = bin2bcd(hour);
 
-	secBcd &= ~(1 << 7);
-	RTC->TR &= ~(0b1111111);
-	RTC->TR |= secBcd;
+//	secBcd &= ~(1 << 7);
+//	RTC->TR &= ~(0b1111111);
+//	RTC->TR |= secBcd;
+//
+//	minBcd &= ~(1 << 7);
+//	RTC->TR &= ~(0b1111111 << 8);
+//	RTC->TR |= minBcd << 8;
+//
+//	hourBcd &= ~(0b11 << 6);
+//	RTC->TR &= ~(0b111111 << 16);
+//	RTC->TR |= hourBcd << 16;
 
-	minBcd &= ~(1 << 7);
-	RTC->TR &= ~(0b1111111 << 8);
-	RTC->TR |= minBcd << 8;
-
-	hourBcd &= ~(0b11 << 6);
-	RTC->TR &= ~(0b111111 << 16);
-	RTC->TR |= hourBcd << 16;
+	uint32_t final = (hourBcd << 16) | (minBcd << 8) | (secBcd);
+	RTC->TR = final;
 }
 
 static void SetDR(uint8_t wday, uint8_t mday, uint8_t mon, uint8_t year_s){
@@ -49,19 +52,22 @@ static void SetDR(uint8_t wday, uint8_t mday, uint8_t mon, uint8_t year_s){
 	uint8_t monBcd = bin2bcd(mon);
 	uint8_t year_sBcd = bin2bcd(year_s);
 
-	mdayBcd &= ~(0b11 << 6);
-	RTC->DR &= ~(0b111111);
-	RTC->DR |= mdayBcd;
+//	mdayBcd &= ~(0b11 << 6);
+//	RTC->DR &= ~(0b111111);
+//	RTC->DR |= mdayBcd;
+//
+//	monBcd &= ~(0b111 << 5);
+//	RTC->DR &= ~(0b11111 << 8);
+//	RTC->DR |= monBcd;
+//
+//	RTC->DR &= ~(0b111 << 13);
+//	RTC->DR |= wday << 13;
+//
+//	RTC->DR &= ~(0xFF << 16);
+//	RTC->DR |= year_sBcd << 16;
 
-	monBcd &= ~(0b111 << 5);
-	RTC->DR &= ~(0b11111 << 8);
-	RTC->DR |= monBcd;
-
-	RTC->DR &= ~(0b111 << 13);
-	RTC->DR |= wday << 13;
-
-	RTC->DR &= ~(0xFF << 16);
-	RTC->DR |= year_sBcd << 16;
+	uint32_t final = (year_sBcd << 16) | (wday << 13) | (monBcd << 8) | (mdayBcd);
+	RTC->DR = final;
 }
 
 void RTC_Update(Timestamp * timestamp){

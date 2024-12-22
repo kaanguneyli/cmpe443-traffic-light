@@ -8,7 +8,7 @@
 ../Src/RTC.c:26:16:RTC_Get_WDay	4	static
 ../Src/RTC.c:27:16:RTC_Get_SYear	4	static
 ../Src/RTC.c:29:13:SetTR	24	static
-../Src/RTC.c:47:13:SetDR	32	static
-../Src/RTC.c:67:6:RTC_Update	16	static
-../Src/RTC.c:90:6:RTC_Get	16	static
-../Src/RTC.c:100:6:RTC_Init	4	static
+../Src/RTC.c:50:13:SetDR	32	static
+../Src/RTC.c:73:6:RTC_Update	16	static
+../Src/RTC.c:96:6:RTC_Get	16	static
+../Src/RTC.c:106:6:RTC_Init	4	static

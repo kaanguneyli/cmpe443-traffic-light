@@ -8,7 +8,7 @@
 ../Src/RTC.c:26:16:RTC_Get_WDay	1
 ../Src/RTC.c:27:16:RTC_Get_SYear	1
 ../Src/RTC.c:29:13:SetTR	1
-../Src/RTC.c:47:13:SetDR	1
-../Src/RTC.c:67:6:RTC_Update	2
-../Src/RTC.c:90:6:RTC_Get	1
-../Src/RTC.c:100:6:RTC_Init	3
+../Src/RTC.c:50:13:SetDR	1
+../Src/RTC.c:73:6:RTC_Update	2
+../Src/RTC.c:96:6:RTC_Get	1
+../Src/RTC.c:106:6:RTC_Init	3
