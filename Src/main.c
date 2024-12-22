@@ -41,7 +41,7 @@ void buzzerOff() { GPIOB->ODR &= ~(1 << 10); }
 
 int blueon = 0;
 void TIM6_IRQHandler(){
-	if (temp == 5){
+	if (temp == 4){
 		temp = 0;
 		t++;
 		/*

@@ -748,9 +748,9 @@ void initStateTimer(){
  8000638:	4b0f      	ldr	r3, [pc, #60]	@ (8000678 <initStateTimer+0x50>)
  800063a:	f640 729f 	movw	r2, #3999	@ 0xf9f
  800063e:	629a      	str	r2, [r3, #40]	@ 0x28
-	TIM6->ARR = 199;
+	TIM6->ARR = 249;
  8000640:	4b0d      	ldr	r3, [pc, #52]	@ (8000678 <initStateTimer+0x50>)
- 8000642:	22c7      	movs	r2, #199	@ 0xc7
+ 8000642:	22f9      	movs	r2, #249	@ 0xf9
  8000644:	62da      	str	r2, [r3, #44]	@ 0x2c
 	TIM6->CR1 &= ~(1<<1); // OVF will generate an event
  8000646:	4b0c      	ldr	r3, [pc, #48]	@ (8000678 <initStateTimer+0x50>)
@@ -960,10 +960,10 @@ int blueon = 0;
 void TIM6_IRQHandler(){
  80007b0:	b580      	push	{r7, lr}
  80007b2:	af00      	add	r7, sp, #0
-	if (temp == 5){
+	if (temp == 4){
  80007b4:	4b0c      	ldr	r3, [pc, #48]	@ (80007e8 <TIM6_IRQHandler+0x38>)
  80007b6:	681b      	ldr	r3, [r3, #0]
- 80007b8:	2b05      	cmp	r3, #5
+ 80007b8:	2b04      	cmp	r3, #4
  80007ba:	d108      	bne.n	80007ce <TIM6_IRQHandler+0x1e>
 		temp = 0;
  80007bc:	4b0a      	ldr	r3, [pc, #40]	@ (80007e8 <TIM6_IRQHandler+0x38>)
