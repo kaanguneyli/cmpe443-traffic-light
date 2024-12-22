@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "defines.h"
 
 typedef struct{
  volatile uint32_t ISR; //0
@@ -56,9 +57,6 @@ typedef struct{
  volatile uint32_t CDR; //C
 } ADCCommon;
 
-#define ISER1 *((volatile uint32_t *) 0xE000E104)
-#define RCC_AHB2ENR *((volatile uint32_t *) (0x40021000 + 0x04C))
-#define RCC_CCIPR1 *((volatile uint32_t *) 0x40021088)
 #define ADC1 ((ADCType *) 0x42028000)
 #define ADC ((ADCCommon *) 0x42028300)
 

@@ -1,3 +1,4 @@
+#include "defines.h"
 #include "GPIO.h"
 #include "defines.h"
 #include <stdint.h>

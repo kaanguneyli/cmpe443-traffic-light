@@ -8,6 +8,8 @@
 #ifndef TIMBASIC_H_
 #define TIMBASIC_H_
 
+#include <stdint.h>
+
 typedef struct {
 	volatile uint32_t CR1;
 	volatile uint32_t CR2;
