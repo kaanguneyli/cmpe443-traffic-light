@@ -47,6 +47,6 @@ void ADC1_2_IRQHandler(void){
 }
 
 
-void get_brightness(void){
+void measure_brightness(void){
 	ADC1->CR |= (1 << 2);
 }

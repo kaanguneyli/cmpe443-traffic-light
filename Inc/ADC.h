@@ -60,5 +60,8 @@ typedef struct{
 #define ADC1 ((ADCType *) 0x42028000)
 #define ADC ((ADCCommon *) 0x42028300)
 
+void init_ADC(void);
+void measure_brightness(void);
+
 
 #endif /* ADC_H_ */

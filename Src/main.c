@@ -4,6 +4,7 @@
 #include "TIMBasic.h"
 #include "ICOC.h"
 #include "GPIO.h"
+#include "ADC.h"
 
 enum {
 	WAITING,
@@ -15,6 +16,9 @@ uint32_t t;
 uint32_t temp;
 int currentState;
 
+extern bool read_brightness_flag;
+extern uint16_t brightness;
+
 void __enable_irq(){
 	__asm volatile(
 			"mov r0, #0\t\n"
@@ -25,6 +29,7 @@ void __enable_irq(){
 void init(){
 	initStateTimer();
 	init_GPIO_ICOC();
+	init_ADC();
 	enableStateTimer();
 	__enable_irq();
 }
@@ -55,6 +60,7 @@ void TIM6_IRQHandler(){
 			blueon = 0;
 		}
 		*/
+		measure_brightness();
 	}
 	else temp++;
 	TIM6->SR = 0;
@@ -70,6 +76,10 @@ int main(void)
 	currentState = WAITING;
 
 	while(1){
+
+		if (read_brightness_flag && (brightness > 100)) blueOn();
+		else blueOff();
+
 		switch(currentState){
 		case WAITING: {
 			// buzzer off
