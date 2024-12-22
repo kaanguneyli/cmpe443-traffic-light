@@ -1,0 +1,6 @@
+../Src/ICOC.c:29:7:TIM15_IRQHandler	7
+../Src/ICOC.c:96:7:init_GPIO_ICOC	1
+../Src/ICOC.c:199:5:isPedestrianInRange	4
+../Src/ICOC.c:208:7:distance_check	3
+../Src/ICOC.c:231:7:get_distance	1
+../Src/ICOC.c:237:7:getCrossingRequests	2

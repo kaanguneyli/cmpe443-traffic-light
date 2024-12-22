@@ -1,7 +1,0 @@
-# Ignore everything
-*
-
-# Except .c and .h files
-!Src/
-!Inc/
-!.gitignore

@@ -1,0 +1,3 @@
+../Src/TIMBasic.c:4:6:initStateTimer	4	static
+../Src/TIMBasic.c:16:6:enableStateTimer	4	static
+../Src/TIMBasic.c:20:6:disableStateTimer	4	static
