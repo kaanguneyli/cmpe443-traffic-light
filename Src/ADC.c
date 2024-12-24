@@ -16,6 +16,7 @@ void init_ADC(void){
 	ADC1->CR &= ~(1 << 29);
 	ADC1->CR |= (1 << 28);
 	RCC_CCIPR1 |= (0b11 << (14 * 2));
+	ADC->CCR |= (0b0011 << 18);
 	ADC->CCR |= (0b11 << (8 * 2));
 	ADC1->SMPR1 |= (0b111 << (3 * 3));
 	ADC1->SQR1 &= ~(0b1111 << 0);

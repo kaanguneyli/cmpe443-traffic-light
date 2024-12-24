@@ -25,6 +25,7 @@ void LPUART1_initialization(void) {
 	GPIOG->AFRH &= ~0b0111;
 	GPIOG->AFRH |= 0b1000;
 	RCC_APB1ENR2 |= 1;
+	LPUART1->PRESC |= 0b0011;
 	LPUART1->BRR = 8888;
 	LPUART1->CR1 |= 1 << 29;
 	LPUART1->CR1 |= 0b11 << 2;
@@ -34,8 +35,8 @@ void LPUART1_initialization(void) {
 	LPUART1->ICR |= (1 << 6);
 	LPUART1->CR1 |= 1 << 6;
 }
-TrafficLight GeneralTraficLight = { 10, 1, 10, 1, 3, 1 };
-extern Timestamp timestamp;
+TrafficLight GeneralTraficLight = { 3, 1, 10, 1, 8, 1 };
+extern Timestamp * ts_ptr;
 
 char TXmessage[512];
 bool eof = true;
@@ -141,25 +142,25 @@ void process_json(const char *json) {
 		} else if (strncmp("\"car_wait\"", key, key_size) == 0) {
 			GeneralTraficLight.car_wait = int_value;
 		} else if (strncmp("\"sec\"", key, key_size) == 0){
-			timestamp.sec = int_value;
+			ts_ptr->sec = int_value;
 			is_RTC_modified = true;
 		} else if (strncmp("\"min\"", key, key_size) == 0){
-			timestamp.min = int_value;
+			ts_ptr->min = int_value;
 			is_RTC_modified = true;
 		} else if (strncmp("\"hour\"", key, key_size) == 0){
-			timestamp.hour = int_value;
+			ts_ptr->hour = int_value;
 			is_RTC_modified = true;
 		} else if (strncmp("\"wday\"", key, key_size) == 0){
-			timestamp.wday = int_value;
+			ts_ptr->wday = int_value;
 			is_RTC_modified = true;
 		} else if (strncmp("\"mon\"", key, key_size) == 0){
-			timestamp.mon = int_value;
+			ts_ptr->mon = int_value;
 			is_RTC_modified = true;
 		} else if (strncmp("\"mday\"", key, key_size) == 0){
-			timestamp.mday = int_value;
+			ts_ptr->mday = int_value;
 			is_RTC_modified = true;
 		} else if (strncmp("\"year\"", key, key_size) == 0){
-			timestamp.year_s = int_value;
+			ts_ptr->year_s = int_value;
 			is_RTC_modified = true;
 		} else {
 			sprintf(err_message, "Key %.*s is not a defined! Aborting...\r\n",
@@ -167,7 +168,7 @@ void process_json(const char *json) {
 			send_message_NB(err_message);
 			return;
 		}
-		if (is_RTC_modified) RTC_Update(&timestamp);
+		if (is_RTC_modified) RTC_Update(ts_ptr);
 	}
 }
 

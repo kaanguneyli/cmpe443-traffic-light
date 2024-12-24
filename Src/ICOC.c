@@ -134,7 +134,7 @@
 
 	 // end PS 9@Cmpe443
 	 // Prescale clock speed from 4MHz to 1MHz (now every pulse takes 1 microsecond)
-	 TIM15->PSC = 3;
+	 TIM15->PSC = 23;
 
 	 // Set ARR to 50 milliseconds (50000 microseconds)
 	 TIM15->ARR = 49999;

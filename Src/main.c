@@ -16,17 +16,22 @@ enum {
 };
 
 uint32_t t;
+uint32_t brightness_timer = 0;
 uint32_t temp;
 int currentState;
 
 extern bool read_brightness_flag;
 extern uint16_t brightness;
-uint16_t brightness_measurement;
+uint16_t brightness_measurement = 16;
 extern TrafficLight GeneralTraficLight;
 
 extern uint32_t red_man[8];
-extern uint32_t reset_matrix[8];
 extern uint32_t green_man_1[8];
+extern uint32_t green_man_2[8];
+extern uint32_t green_man_3[8];
+extern uint32_t green_man_4[8];
+extern uint32_t green_man_5[8];
+extern uint32_t reset_matrix[8];
 
 int blueon = 0;
 Timestamp timestamp = {
@@ -38,6 +43,8 @@ Timestamp timestamp = {
 		.mday = 25,
 		.year_s = 24
 };
+
+Timestamp * ts_ptr = &timestamp;
 
 void redOn(){ GPIOA->ODR |= 1 << 9; }
 void greenOn() { GPIOC->ODR |= 1 << 7; }
@@ -101,6 +108,12 @@ void constructLog(char string[512], Timestamp * timestamp, int type){
 }
 
 void init(){
+	while((RCC_CR & (1<<1)) == 0);
+	RCC_CR &= ~(0b1111<<4);
+	RCC_CR |= (0b1001<<4);
+	while((RCC_CR & (1<<1)) == 0);
+	RCC_CR |= (0b1<<3);
+	while((RCC_CR & (1<<1)) == 0);
 	initStateTimer();
 	init_GPIO_ICOC();
 	init_ADC();
@@ -108,12 +121,27 @@ void init(){
 	RTC_Init();
 	RTC_Update(&timestamp);
 	enableStateTimer();
+	init_LED_Matrix();
 	__enable_irq();
 }
 
+uint32_t *frames[10] = {
+		green_man_1,
+		green_man_2,
+		green_man_3,
+		green_man_2,
+		green_man_1,
+		green_man_1,
+		green_man_4,
+		green_man_5,
+		green_man_4,
+		green_man_1
+};
+
 void TIM6_IRQHandler(){
-	if (temp == 4){
+	if (temp == 9){
 		temp = 0;
+		brightness_timer++;
 		t++;
 //		if (!blueon) {
 //			blueOn();
@@ -127,100 +155,88 @@ void TIM6_IRQHandler(){
 //		RTC_Get(&timestamp);
 	}
 	else temp++;
+	if (brightness_timer == 5) {
+		brightness_measurement = ((brightness << 3) >> 3) + 1;
+		brightness_timer = 0;
+	}
 	TIM6->SR = 0;
 	getCrossingRequests();
 }
 
-/*
 int main(void)
 {
 	// initialization functions go here
 	init();
 	// state initialization
 	currentState = WAITING;
-	set_frame(red_man, BLACK, 50);
-	changeLight(GREEN, 50);
-	send_LED();
 
 	while(1){
-//
-//		if (read_brightness_flag) brightness_measurement = brightness;
-//
-//
-//		switch(currentState){
-//		case WAITING: {
-//			// pedestrian light red
-//			// car light green
-//			t = 0;
-//			if (isPedestrianInRange() != 0) {
-//				currentState = REQUEST;
-//				RTC_Get(&timestamp);
-//				// convert into date string
-//				char log[512] = {0};
-//				// send with uart
-//				constructLog(log, &timestamp, 0);
-//				send_message_NB(log);
-//			}
-//			set_frame(red_man, BLACK, brightness_measurement);
-//			changeLight(GREEN, brightness_measurement);
-//			send_LED();
-//			break;
-//		}
-//		case REQUEST: {
-//			set_frame(green_man_1, GREEN, brightness_measurement);
-//			changeLight(GREEN, brightness_measurement);
-//			send_LED();
-//			if (t < getGreenToYellowTimestamp()) {
-//				// car light green
-//				// buzzer on for 3 seconds
-//				redOn();
-//				if (t < 3) buzzerOn();
-//				else buzzerOff();
-//			}
-//			else if (t < getYellowToRedTimestamp()) {
-//				// pedestrian light red
-//				redOn();
-//				greenOn();
-//				// car light yellow
-//			}
-//			else if (t < getRedToGreenTimestamp()) {
-//				redOff();
-//				greenOn();
-//				if (t < getPedestrianCrossingTimestamp()) {
-//					// pedestrian light red
-//				}
-//				else if (t < getAnimationEndingTimestamp()) {
-//					// play animation
-//				}
-//				else if (t < getCarWaitTimestamp()) {
-//					// no animation, car light red
-//				}
-//				// car light red
-//			}
-//			// t = 15
-//			else {
-//				currentState = WAITING;
-//				redOff();
-//				greenOff();
-//			}
-//			break;
-//		}
-//
-//		default: break;
-//		}
+		switch(currentState){
+		case WAITING: {
+			// pedestrian light red
+			// car light green
+			t = 0;
+			if (isPedestrianInRange() != 0) {
+				currentState = REQUEST;
+				RTC_Get(&timestamp);
+				// convert into date string
+				char log[512] = {0};
+				// send with uart
+				constructLog(log, &timestamp, 0);
+				send_message_NB(log);
+			}
+			set_frame(red_man, RED, brightness_measurement);
+			changeLight(GREEN, brightness_measurement);
+			send_LED();
+			break;
+		}
+		case REQUEST: {
+			if (t < getGreenToYellowTimestamp()) {
+				// car light green
+				// buzzer on for 3 seconds
+				if (t < 3) buzzerOn();
+				else buzzerOff();
+				set_frame(red_man, RED, brightness_measurement);
+				changeLight(GREEN, brightness_measurement);
+			}
+			else if (t < getYellowToRedTimestamp()) {
+				// pedestrian light red
+				set_frame(red_man, RED, brightness_measurement);
+				// car light yellow
+				changeLight(YELLOW, brightness_measurement);
+			}
+			else if (t < getRedToGreenTimestamp()) {
+				// car light red
+				changeLight(RED, brightness_measurement);
+				if (t < getPedestrianCrossingTimestamp()) {
+					// pedestrian light red
+					set_frame(red_man, RED, brightness_measurement);
+				}
+				else if (t < getAnimationEndingTimestamp()) {
+					// play animation
+					set_frame(frames[0], GREEN, brightness_measurement);
+				}
+				else if (t < getCarWaitTimestamp()) {
+					// no animation, car light red
+					set_frame(red_man, RED, brightness_measurement);
+				}
+			}
+			// t = 15
+			else {
+				currentState = WAITING;
+			}
+			send_LED();
+			break;
+		}
+
+		default: break;
+		}
 		__asm volatile("wfi");
 	}
 }
 
-*/
 
-int bruh ;
-extern uint32_t red_man[8];
-extern uint32_t green_man_1[8];
-extern uint32_t green_man_2[8];
-extern uint32_t green_man_3[8];
-extern uint32_t green_man_4[8];
-
+/*
 int main(void) {
 	init();
 	while((RCC_CR & (1<<1)) == 0);
@@ -255,3 +271,5 @@ int main(void) {
   }
   return 0;
 }
+
+*/
