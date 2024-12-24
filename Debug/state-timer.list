@@ -7,23 +7,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   1 .text         00003120  080001f0  080001f0  000011f0  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .rodata       000002c0  08003310  08003310  00004310  2**2
+  2 .rodata       000002c4  08003310  08003310  00004310  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .ARM.extab    00000000  080035d0  080035d0  00006268  2**0
+  3 .ARM.extab    00000000  080035d4  080035d4  00006268  2**0
                   CONTENTS
-  4 .ARM          00000000  080035d0  080035d0  00006268  2**0
+  4 .ARM          00000000  080035d4  080035d4  00006268  2**0
                   CONTENTS
-  5 .preinit_array 00000000  080035d0  080035d0  00006268  2**0
+  5 .preinit_array 00000000  080035d4  080035d4  00006268  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .init_array   00000004  080035d0  080035d0  000045d0  2**2
+  6 .init_array   00000004  080035d4  080035d4  000045d4  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  7 .fini_array   00000004  080035d4  080035d4  000045d4  2**2
+  7 .fini_array   00000004  080035d8  080035d8  000045d8  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  8 .data         00001268  20000000  080035d8  00005000  2**2
+  8 .data         00001268  20000000  080035dc  00005000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          0000212c  20001268  08004840  00006268  2**2
+  9 .bss          0000212c  20001268  08004844  00006268  2**2
                   ALLOC
- 10 ._user_heap_stack 00000604  20003394  08004840  00006394  2**0
+ 10 ._user_heap_stack 00000604  20003394  08004844  00006394  2**0
                   ALLOC
  11 .ARM.attributes 00000036  00000000  00000000  00006268  2**0
                   CONTENTS, READONLY
@@ -37,11 +37,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  16 .debug_macro  00002ef5  00000000  00000000  0000c1f1  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   00005607  00000000  00000000  0000f0e6  2**0
+ 17 .debug_line   00005606  00000000  00000000  0000f0e6  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    0000abea  00000000  00000000  000146ed  2**0
+ 18 .debug_str    0000abea  00000000  00000000  000146ec  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000043  00000000  00000000  0001f2d7  2**0
+ 19 .comment      00000043  00000000  00000000  0001f2d6  2**0
                   CONTENTS, READONLY
  20 .debug_frame  00001b1c  00000000  00000000  0001f31c  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -2505,7 +2505,7 @@ void process_json(const char *json) {
 	for (int j = 1;
  8001298:	2301      	movs	r3, #1
  800129a:	f8c7 3828 	str.w	r3, [r7, #2088]	@ 0x828
- 800129e:	e1be      	b.n	800161e <process_json+0x3e6>
+ 800129e:	e1b5      	b.n	800160c <process_json+0x3d4>
 			j < n_tokens
 					&& mu_json_token_depth(&tokens[j]) > mu_json_token_depth(t);
 			j++) {
@@ -2765,7 +2765,7 @@ void process_json(const char *json) {
  80014e2:	2301      	movs	r3, #1
  80014e4:	f887 382f 	strb.w	r3, [r7, #2095]	@ 0x82f
  80014e8:	e08b      	b.n	8001602 <process_json+0x3ca>
-		} else if (strncmp("\"wday\"", key, key_size) == 0){
+		} else if (strncmp("\"weekday\"", key, key_size) == 0){
  80014ea:	f8d7 3814 	ldr.w	r3, [r7, #2068]	@ 0x814
  80014ee:	461a      	mov	r2, r3
  80014f0:	f8d7 1818 	ldr.w	r1, [r7, #2072]	@ 0x818
@@ -2803,7 +2803,7 @@ void process_json(const char *json) {
  8001536:	2301      	movs	r3, #1
  8001538:	f887 382f 	strb.w	r3, [r7, #2095]	@ 0x82f
  800153c:	e061      	b.n	8001602 <process_json+0x3ca>
-		} else if (strncmp("\"mday\"", key, key_size) == 0){
+		} else if (strncmp("\"day\"", key, key_size) == 0){
  800153e:	f8d7 3814 	ldr.w	r3, [r7, #2068]	@ 0x814
  8001542:	461a      	mov	r2, r3
  8001544:	f8d7 1818 	ldr.w	r1, [r7, #2072]	@ 0x818
@@ -2859,9 +2859,9 @@ void process_json(const char *json) {
  80015cc:	0800344c 	.word	0x0800344c
  80015d0:	08003454 	.word	0x08003454
  80015d4:	0800345c 	.word	0x0800345c
- 80015d8:	08003464 	.word	0x08003464
- 80015dc:	0800346c 	.word	0x0800346c
- 80015e0:	08003474 	.word	0x08003474
+ 80015d8:	08003468 	.word	0x08003468
+ 80015dc:	08003470 	.word	0x08003470
+ 80015e0:	08003478 	.word	0x08003478
 		} else {
 			sprintf(err_message, "Key %.*s is not a defined! Aborting...\r\n",
  80015e4:	f107 000c 	add.w	r0, r7, #12
@@ -2876,45 +2876,45 @@ void process_json(const char *json) {
  80015fc:	f7ff fdfe 	bl	80011fc <send_message_NB>
 			return;
  8001600:	e028      	b.n	8001654 <process_json+0x41c>
-		}
-		if (is_RTC_modified) RTC_Update(ts_ptr);
- 8001602:	f897 382f 	ldrb.w	r3, [r7, #2095]	@ 0x82f
- 8001606:	2b00      	cmp	r3, #0
- 8001608:	d004      	beq.n	8001614 <process_json+0x3dc>
- 800160a:	4b15      	ldr	r3, [pc, #84]	@ (8001660 <process_json+0x428>)
- 800160c:	681b      	ldr	r3, [r3, #0]
- 800160e:	4618      	mov	r0, r3
- 8001610:	f7ff fbfc 	bl	8000e0c <RTC_Update>
 			j++) {
- 8001614:	f8d7 3828 	ldr.w	r3, [r7, #2088]	@ 0x828
- 8001618:	3301      	adds	r3, #1
- 800161a:	f8c7 3828 	str.w	r3, [r7, #2088]	@ 0x828
+ 8001602:	f8d7 3828 	ldr.w	r3, [r7, #2088]	@ 0x828
+ 8001606:	3301      	adds	r3, #1
+ 8001608:	f8c7 3828 	str.w	r3, [r7, #2088]	@ 0x828
 					&& mu_json_token_depth(&tokens[j]) > mu_json_token_depth(t);
- 800161e:	f8d7 2828 	ldr.w	r2, [r7, #2088]	@ 0x828
- 8001622:	f8d7 3824 	ldr.w	r3, [r7, #2084]	@ 0x824
- 8001626:	429a      	cmp	r2, r3
- 8001628:	da14      	bge.n	8001654 <process_json+0x41c>
- 800162a:	f507 7103 	add.w	r1, r7, #524	@ 0x20c
- 800162e:	f8d7 2828 	ldr.w	r2, [r7, #2088]	@ 0x828
- 8001632:	4613      	mov	r3, r2
- 8001634:	005b      	lsls	r3, r3, #1
- 8001636:	4413      	add	r3, r2
- 8001638:	009b      	lsls	r3, r3, #2
- 800163a:	440b      	add	r3, r1
- 800163c:	4618      	mov	r0, r3
- 800163e:	f000 fbaa 	bl	8001d96 <mu_json_token_depth>
- 8001642:	4604      	mov	r4, r0
- 8001644:	f8d7 0820 	ldr.w	r0, [r7, #2080]	@ 0x820
- 8001648:	f000 fba5 	bl	8001d96 <mu_json_token_depth>
- 800164c:	4603      	mov	r3, r0
- 800164e:	429c      	cmp	r4, r3
- 8001650:	f73f ae26 	bgt.w	80012a0 <process_json+0x68>
+ 800160c:	f8d7 2828 	ldr.w	r2, [r7, #2088]	@ 0x828
+ 8001610:	f8d7 3824 	ldr.w	r3, [r7, #2084]	@ 0x824
+ 8001614:	429a      	cmp	r2, r3
+ 8001616:	da14      	bge.n	8001642 <process_json+0x40a>
+ 8001618:	f507 7103 	add.w	r1, r7, #524	@ 0x20c
+ 800161c:	f8d7 2828 	ldr.w	r2, [r7, #2088]	@ 0x828
+ 8001620:	4613      	mov	r3, r2
+ 8001622:	005b      	lsls	r3, r3, #1
+ 8001624:	4413      	add	r3, r2
+ 8001626:	009b      	lsls	r3, r3, #2
+ 8001628:	440b      	add	r3, r1
+ 800162a:	4618      	mov	r0, r3
+ 800162c:	f000 fbb3 	bl	8001d96 <mu_json_token_depth>
+ 8001630:	4604      	mov	r4, r0
+ 8001632:	f8d7 0820 	ldr.w	r0, [r7, #2080]	@ 0x820
+ 8001636:	f000 fbae 	bl	8001d96 <mu_json_token_depth>
+ 800163a:	4603      	mov	r3, r0
+ 800163c:	429c      	cmp	r4, r3
+ 800163e:	f73f ae2f 	bgt.w	80012a0 <process_json+0x68>
+		}
 	}
+	if (is_RTC_modified) RTC_Update(ts_ptr);
+ 8001642:	f897 382f 	ldrb.w	r3, [r7, #2095]	@ 0x82f
+ 8001646:	2b00      	cmp	r3, #0
+ 8001648:	d004      	beq.n	8001654 <process_json+0x41c>
+ 800164a:	4b05      	ldr	r3, [pc, #20]	@ (8001660 <process_json+0x428>)
+ 800164c:	681b      	ldr	r3, [r3, #0]
+ 800164e:	4618      	mov	r0, r3
+ 8001650:	f7ff fbdc 	bl	8000e0c <RTC_Update>
 }
  8001654:	f607 0734 	addw	r7, r7, #2100	@ 0x834
  8001658:	46bd      	mov	sp, r7
  800165a:	bd90      	pop	{r4, r7, pc}
- 800165c:	0800347c 	.word	0x0800347c
+ 800165c:	08003480 	.word	0x08003480
  8001660:	200000e8 	.word	0x200000e8
 
 08001664 <LPUART1_IRQHandler>:
@@ -3330,12 +3330,12 @@ void constructLog(char string[512], Timestamp * timestamp, int type){
  8001906:	373c      	adds	r7, #60	@ 0x3c
  8001908:	46bd      	mov	sp, r7
  800190a:	bdf0      	pop	{r4, r5, r6, r7, pc}
- 800190c:	0800357c 	.word	0x0800357c
- 8001910:	080034a8 	.word	0x080034a8
- 8001914:	080034ac 	.word	0x080034ac
- 8001918:	080034b4 	.word	0x080034b4
- 800191c:	080034d4 	.word	0x080034d4
- 8001920:	080034f4 	.word	0x080034f4
+ 800190c:	08003580 	.word	0x08003580
+ 8001910:	080034ac 	.word	0x080034ac
+ 8001914:	080034b0 	.word	0x080034b0
+ 8001918:	080034b8 	.word	0x080034b8
+ 800191c:	080034d8 	.word	0x080034d8
+ 8001920:	080034f8 	.word	0x080034f8
 
 08001924 <init>:
 
@@ -5950,7 +5950,7 @@ LoopForever:
   ldr r1, =_edata
  80028cc:	20001268 	.word	0x20001268
   ldr r2, =_sidata
- 80028d0:	080035d8 	.word	0x080035d8
+ 80028d0:	080035dc 	.word	0x080035dc
   ldr r2, =_sbss
  80028d4:	20001268 	.word	0x20001268
   ldr r4, =_ebss
@@ -6118,10 +6118,10 @@ Infinite_Loop:
  8002a22:	3601      	adds	r6, #1
  8002a24:	4798      	blx	r3
  8002a26:	e7f2      	b.n	8002a0e <__libc_init_array+0x1e>
- 8002a28:	080035d0 	.word	0x080035d0
- 8002a2c:	080035d0 	.word	0x080035d0
- 8002a30:	080035d0 	.word	0x080035d0
- 8002a34:	080035d4 	.word	0x080035d4
+ 8002a28:	080035d4 	.word	0x080035d4
+ 8002a2c:	080035d4 	.word	0x080035d4
+ 8002a30:	080035d4 	.word	0x080035d4
+ 8002a34:	080035d8 	.word	0x080035d8
 
 08002a38 <__retarget_lock_acquire_recursive>:
  8002a38:	4770      	bx	lr
@@ -6627,11 +6627,11 @@ Infinite_Loop:
  8002ec0:	4b04      	ldr	r3, [pc, #16]	@ (8002ed4 <_svfiprintf_r+0x1f0>)
  8002ec2:	f000 f87d 	bl	8002fc0 <_printf_i>
  8002ec6:	e7ed      	b.n	8002ea4 <_svfiprintf_r+0x1c0>
- 8002ec8:	0800359c 	.word	0x0800359c
- 8002ecc:	080035a6 	.word	0x080035a6
+ 8002ec8:	080035a0 	.word	0x080035a0
+ 8002ecc:	080035aa 	.word	0x080035aa
  8002ed0:	00000000 	.word	0x00000000
  8002ed4:	08002c2d 	.word	0x08002c2d
- 8002ed8:	080035a2 	.word	0x080035a2
+ 8002ed8:	080035a6 	.word	0x080035a6
 
 08002edc <_printf_common>:
  8002edc:	e92d 47f0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, sl, lr}
@@ -6962,8 +6962,8 @@ Infinite_Loop:
  80031f0:	f104 0619 	add.w	r6, r4, #25
  80031f4:	e7f5      	b.n	80031e2 <_printf_i+0x222>
  80031f6:	bf00      	nop
- 80031f8:	080035ad 	.word	0x080035ad
- 80031fc:	080035be 	.word	0x080035be
+ 80031f8:	080035b1 	.word	0x080035b1
+ 80031fc:	080035c2 	.word	0x080035c2
 
 08003200 <memmove>:
  8003200:	4288      	cmp	r0, r1

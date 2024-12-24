@@ -74,7 +74,7 @@ void __enable_irq(){
 void constructLog(char string[512], Timestamp * timestamp, int type){
 	if (!timestamp || !string) return;
 
-    const char *weekday_names[] = {"forbidden", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    const char *weekday_names[] = {"forbidden", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
     //const char *month_names[] = {"forbidden", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
     const char *weekday = weekday_names[timestamp->wday];

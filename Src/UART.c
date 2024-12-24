@@ -150,13 +150,13 @@ void process_json(const char *json) {
 		} else if (strncmp("\"hour\"", key, key_size) == 0){
 			ts_ptr->hour = int_value;
 			is_RTC_modified = true;
-		} else if (strncmp("\"wday\"", key, key_size) == 0){
+		} else if (strncmp("\"weekday\"", key, key_size) == 0){
 			ts_ptr->wday = int_value;
 			is_RTC_modified = true;
 		} else if (strncmp("\"mon\"", key, key_size) == 0){
 			ts_ptr->mon = int_value;
 			is_RTC_modified = true;
-		} else if (strncmp("\"mday\"", key, key_size) == 0){
+		} else if (strncmp("\"day\"", key, key_size) == 0){
 			ts_ptr->mday = int_value;
 			is_RTC_modified = true;
 		} else if (strncmp("\"year\"", key, key_size) == 0){
@@ -168,8 +168,8 @@ void process_json(const char *json) {
 			send_message_NB(err_message);
 			return;
 		}
-		if (is_RTC_modified) RTC_Update(ts_ptr);
 	}
+	if (is_RTC_modified) RTC_Update(ts_ptr);
 }
 
 char RXmessage[512];
