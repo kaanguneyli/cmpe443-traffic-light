@@ -1,0 +1,5 @@
+../Src/ICOC.c:205:7:TIM15_IRQHandler	4	static
+../Src/ICOC.c:271:7:init_GPIO	4	static
+../Src/ICOC.c:369:7:__enable_interrupts	4	static,ignoring_inline_asm
+../Src/ICOC.c:381:7:distance_check	4	static
+../Src/ICOC.c:404:7:get_distance	4	static

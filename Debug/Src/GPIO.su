@@ -1,1 +1,6 @@
-../Src/GPIO.c:59:6:init_GPIOE_P3	4	static
+../Src/GPIO.c:57:6:init_GPIOE_P3	4	static
+../Src/GPIO.c:64:6:init_LED_Matrix	16	static
+../Src/GPIO.c:96:6:DMA1_Channel1_IRQHandler	4	static
+../Src/GPIO.c:107:6:set_frame	48	static
+../Src/GPIO.c:133:6:send_LED	4	static
+../Src/GPIO.c:139:6:changeLight	48	static

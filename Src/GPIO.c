@@ -127,7 +127,7 @@ void set_frame(uint32_t *frame, uint8_t color, uint8_t brightness) {
   for (int i = 256 * 3 * 8; i < frame_data_lenght; i++) {
     animation_frame[i] = 0;
   }
-  send_LED();
+//  send_LED();
 }
 
 bool send_LED() {
@@ -181,5 +181,5 @@ void changeLight(uint8_t color, uint8_t brightness) {
       }
     }
   }
-  send_LED();
+//  send_LED();
 }

@@ -1,7 +1,6 @@
 "./Src/ADC.o"
 "./Src/GPIO.o"
 "./Src/ICOC.o"
-"./Src/TIMBasic.o"
 "./Src/UART.o"
 "./Src/main.o"
 "./Src/mu_json.o"
