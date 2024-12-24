@@ -57,7 +57,7 @@ int main(void) {
 	while((RCC_CR & (1<<1)) == 0);
 	init_LED_Matrix();
 	set_frame(stopping_man, RED, 16);
-	changeLight(RED, 255);
+	changeLight(GREEN, 255);
 	send_LED();
   __asm volatile( // NEW! enable all interrupts that are configured
       "mov r0, #0 \n\t"

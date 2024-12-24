@@ -1608,9 +1608,9 @@ int main(void) {
  8000cf2:	2101      	movs	r1, #1
  8000cf4:	4826      	ldr	r0, [pc, #152]	@ (8000d90 <main+0xf8>)
  8000cf6:	f7ff fbbb 	bl	8000470 <set_frame>
-	changeLight(RED, 255);
+	changeLight(GREEN, 255);
  8000cfa:	21ff      	movs	r1, #255	@ 0xff
- 8000cfc:	2001      	movs	r0, #1
+ 8000cfc:	2002      	movs	r0, #2
  8000cfe:	f7ff fc45 	bl	800058c <changeLight>
 	send_LED();
  8000d02:	f7ff fc2f 	bl	8000564 <send_LED>
