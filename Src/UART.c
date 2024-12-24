@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include "UART.h"
+#include "RTC.h"
 #include "defines.h"
 #include "GPIO.h"
 #include "mu_json.h"
@@ -34,6 +35,7 @@ void LPUART1_initialization(void) {
 	LPUART1->CR1 |= 1 << 6;
 }
 TrafficLight GeneralTraficLight = { 10, 1, 10, 1, 3, 1 };
+extern Timestamp timestamp;
 
 char TXmessage[512];
 bool eof = true;
@@ -82,6 +84,7 @@ int str2int(const char *str, size_t n) {
 }
 
 void process_json(const char *json) {
+	bool is_RTC_modified = false;
 	mu_json_token_t tokens[128]; // Adjust size as needed
 	char err_message[512];
 	int n_tokens = mu_json_parse_c_str(tokens, 128, json, NULL);
@@ -137,12 +140,34 @@ void process_json(const char *json) {
 			GeneralTraficLight.animation_duration = int_value;
 		} else if (strncmp("\"car_wait\"", key, key_size) == 0) {
 			GeneralTraficLight.car_wait = int_value;
+		} else if (strncmp("\"sec\"", key, key_size) == 0){
+			timestamp.sec = int_value;
+			is_RTC_modified = true;
+		} else if (strncmp("\"min\"", key, key_size) == 0){
+			timestamp.min = int_value;
+			is_RTC_modified = true;
+		} else if (strncmp("\"hour\"", key, key_size) == 0){
+			timestamp.hour = int_value;
+			is_RTC_modified = true;
+		} else if (strncmp("\"wday\"", key, key_size) == 0){
+			timestamp.wday = int_value;
+			is_RTC_modified = true;
+		} else if (strncmp("\"mon\"", key, key_size) == 0){
+			timestamp.mon = int_value;
+			is_RTC_modified = true;
+		} else if (strncmp("\"mday\"", key, key_size) == 0){
+			timestamp.mday = int_value;
+			is_RTC_modified = true;
+		} else if (strncmp("\"year\"", key, key_size) == 0){
+			timestamp.year_s = int_value;
+			is_RTC_modified = true;
 		} else {
 			sprintf(err_message, "Key %.*s is not a defined! Aborting...\r\n",
 					key_size, key);
 			send_message_NB(err_message);
 			return;
 		}
+		if (is_RTC_modified) RTC_Update(&timestamp);
 	}
 }
 
@@ -156,7 +181,7 @@ void LPUART1_IRQHandler(void) {
 		if (LPUART1_read_value == '\0' || LPUART1_read_value == '\r') {
 			*char_read = '\0';
 			char_read = RXmessage;
-//			send_message_NB(RXmessage);
+			send_message_NB(RXmessage);
 			// Read_coming json
 			process_json(RXmessage);
 		} else {

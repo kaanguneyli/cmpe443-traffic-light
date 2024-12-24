@@ -26,9 +26,7 @@ typedef struct {
 	uint8_t hour;
 	uint8_t mday;
 	uint8_t mon;
-	uint8_t year;
 	uint8_t wday;
-	uint8_t yday;
 	uint8_t year_s; // year in short notation
 } Timestamp;
 
