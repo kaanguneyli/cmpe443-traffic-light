@@ -21,7 +21,12 @@ int currentState;
 
 extern bool read_brightness_flag;
 extern uint16_t brightness;
+uint16_t brightness_measurement;
 extern TrafficLight GeneralTraficLight;
+
+extern uint32_t red_man[8];
+extern uint32_t reset_matrix[8];
+extern uint32_t green_man_1[8];
 
 int blueon = 0;
 Timestamp timestamp = {
@@ -126,75 +131,127 @@ void TIM6_IRQHandler(){
 	getCrossingRequests();
 }
 
-
+/*
 int main(void)
 {
 	// initialization functions go here
 	init();
 	// state initialization
 	currentState = WAITING;
+	set_frame(red_man, BLACK, 50);
+	changeLight(GREEN, 50);
+	send_LED();
 
 	while(1){
-
-		if (read_brightness_flag && (brightness > 100)) blueOn();
-		else blueOff();
-
-		switch(currentState){
-		case WAITING: {
-			// buzzer off
-			// pedestrian light red
-			// car light green
-			t = 0;
-			if (isPedestrianInRange() != 0) {
-				currentState = REQUEST;
-				RTC_Get(&timestamp);
-				// convert into date string
-				char log[512] = {0};
-				// send with uart
-				constructLog(log, &timestamp, 0);
-				send_message_NB(log);
-			}
-			break;
-		}
-		case REQUEST: {
-			if (t < getGreenToYellowTimestamp()) {
-				// car light green
-				// buzzer on for 3 seconds
-				redOn();
-				if (t < 3) buzzerOn();
-				else buzzerOff();
-			}
-			else if (t < getYellowToRedTimestamp()) {
-				// pedestrian light red
-				redOn();
-				greenOn();
-				// car light yellow
-			}
-			else if (t < getRedToGreenTimestamp()) {
-				redOff();
-				greenOn();
-				if (t < getPedestrianCrossingTimestamp()) {
-					// pedestrian light red
-				}
-				else if (t < getAnimationEndingTimestamp()) {
-					// play animation
-				}
-				else if (t < getCarWaitTimestamp()) {
-					// no animation, car light red
-				}
-				// car light red
-			}
-			// t = 15
-			else {
-				currentState = WAITING;
-				redOff();
-				greenOff();
-			}
-			break;
-		}
-
-		default: break;
-		}
+//
+//		if (read_brightness_flag) brightness_measurement = brightness;
+//
+//
+//		switch(currentState){
+//		case WAITING: {
+//			// pedestrian light red
+//			// car light green
+//			t = 0;
+//			if (isPedestrianInRange() != 0) {
+//				currentState = REQUEST;
+//				RTC_Get(&timestamp);
+//				// convert into date string
+//				char log[512] = {0};
+//				// send with uart
+//				constructLog(log, &timestamp, 0);
+//				send_message_NB(log);
+//			}
+//			set_frame(red_man, BLACK, brightness_measurement);
+//			changeLight(GREEN, brightness_measurement);
+//			send_LED();
+//			break;
+//		}
+//		case REQUEST: {
+//			set_frame(green_man_1, GREEN, brightness_measurement);
+//			changeLight(GREEN, brightness_measurement);
+//			send_LED();
+//			if (t < getGreenToYellowTimestamp()) {
+//				// car light green
+//				// buzzer on for 3 seconds
+//				redOn();
+//				if (t < 3) buzzerOn();
+//				else buzzerOff();
+//			}
+//			else if (t < getYellowToRedTimestamp()) {
+//				// pedestrian light red
+//				redOn();
+//				greenOn();
+//				// car light yellow
+//			}
+//			else if (t < getRedToGreenTimestamp()) {
+//				redOff();
+//				greenOn();
+//				if (t < getPedestrianCrossingTimestamp()) {
+//					// pedestrian light red
+//				}
+//				else if (t < getAnimationEndingTimestamp()) {
+//					// play animation
+//				}
+//				else if (t < getCarWaitTimestamp()) {
+//					// no animation, car light red
+//				}
+//				// car light red
+//			}
+//			// t = 15
+//			else {
+//				currentState = WAITING;
+//				redOff();
+//				greenOff();
+//			}
+//			break;
+//		}
+//
+//		default: break;
+//		}
 		__asm volatile("wfi");
 	}
+}
+
+*/
+
+int bruh ;
+extern uint32_t red_man[8];
+extern uint32_t green_man_1[8];
+extern uint32_t green_man_2[8];
+extern uint32_t green_man_3[8];
+extern uint32_t green_man_4[8];
+
+int main(void) {
+	init();
+	while((RCC_CR & (1<<1)) == 0);
+	RCC_CR &= ~(0b1111<<4);
+	RCC_CR |= (0b1001<<4);
+	while((RCC_CR & (1<<1)) == 0);
+	RCC_CR |= (0b1<<3);
+	while((RCC_CR & (1<<1)) == 0);
+	init_LED_Matrix();
+	set_frame(red_man, RED, 16);
+	changeLight(RED, 255);
+	send_LED();
+  __asm volatile( // NEW! enable all interrupts that are configured
+      "mov r0, #0 \n\t"
+      "msr primask, r0 \n\t");
+  for(int i=0;i<1000000;i++){
+	  bruh = 0;
+  }
+  set_frame(red_man, RED, 16);
+  send_LED();
+	  for(int i=0;i<1000000;i++){
+		  bruh = 0;
+	  }
+	  set_frame(red_man, RED, 16);
+	  send_LED();
+		  for(int i=0;i<1000000;i++){
+			  bruh = 0;
+		  }
+		  set_frame(red_man, RED, 16);
+		  send_LED();
+  while (1) {
+  }
+  return 0;
 }

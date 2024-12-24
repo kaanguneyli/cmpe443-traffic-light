@@ -1,4 +1,5 @@
 #pragma once
+#include <stdint.h>
 #include "TIMBasic.h"
 
 #define ISER0 *((volatile uint32_t *)0xE000E100)
@@ -15,6 +16,8 @@
 #define RCC_APB1ENR2 *((volatile uint32_t *)0x4002105C)
 #define RCC_APB2ENR *((volatile uint32_t *)0x40021060)
 #define RCC_CCIPR1 *((volatile uint32_t *)0x40021088)
+#define RCC_CR *((volatile uint32_t *) 0x40021000)
+#define RCC_CFGR *((volatile uint32_t *) 0x40021008)
 
 #define TIM6 ((volatile TIMxBasicType *)0x40001000)
 
