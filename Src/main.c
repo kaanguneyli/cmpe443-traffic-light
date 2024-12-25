@@ -168,14 +168,14 @@ void TIM6_IRQHandler(){
 	}
 	else temp++;
 	if (brightness_timer == 5) {
-		brightness_measurement = ((brightness << 3) >> 3) + 1;
+		brightness_measurement = ((brightness << 2) >> 2) + 2;
 		brightness_timer = 0;
 	}
 	TIM6->SR = 0;
 	getCrossingRequests();
 }
 
-void log(int type){
+void logData(int type){
 	RTC_Get(&timestamp);
 	// convert into date string
 	char log[512] = {0};
@@ -199,7 +199,7 @@ int main(void)
 			t = 0;
 			if (isPedestrianInRange() != 0) {
 				currentState = REQUEST;
-				log(0);
+				logData(0);
 			}
 			set_frame(red_man, RED, brightness_measurement);
 			changeLight(GREEN, brightness_measurement);
@@ -224,18 +224,18 @@ int main(void)
 			else if (t < getRedToGreenTimestamp()) {
 				// car light red
 				changeLight(RED, brightness_measurement);
-				if (t == getYellowToRedTimestamp()) log(1);
+				if (t == getYellowToRedTimestamp()) logData(1);
 				if (t < getPedestrianCrossingTimestamp()) {
 					// pedestrian light red
 					set_frame(red_man, RED, brightness_measurement);
 				}
 				else if (t < getAnimationEndingTimestamp()) {
-					if (t == getPedestrianCrossingTimestamp()) log(4);
+					if (t == getPedestrianCrossingTimestamp()) logData(4);
 					// play animation
 					set_frame(frames[temp], GREEN, brightness_measurement);
 				}
 				else if (t < getCarWaitTimestamp()) {
-					if (t == getAnimationEndingTimestamp()) log(2);
+					if (t == getAnimationEndingTimestamp()) logData(2);
 					// no animation, car light red
 					set_frame(red_man, RED, brightness_measurement);
 				}
@@ -243,7 +243,7 @@ int main(void)
 			// t = 15
 			else {
 				currentState = WAITING;
-				log(3);
+				logData(3);
 			}
 			send_LED();
 			break;

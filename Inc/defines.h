@@ -20,6 +20,8 @@
 #define RCC_CFGR *((volatile uint32_t *) 0x40021008)
 
 #define TIM6 ((volatile TIMxBasicType *)0x40001000)
+#define RTC ((volatile RTCType *) 0x40002800)
+
 
 typedef struct {
   volatile uint16_t green_duration;

@@ -8,8 +8,6 @@
 #include <defines.h>
 #include <RTC.h>
 
-#define RTC ((volatile RTCType *) 0x40002800)
-
 static uint8_t bin2bcd(uint8_t value){
 	return (uint8_t) ((((value) / 10U) << 4U) | ((value) % 10U));
 }
@@ -86,7 +84,6 @@ void RTC_Update(Timestamp * timestamp){
 	// exit initialization mode
 	RTC->ICSR &= ~(1 << 7);
 	// poll INITF not specified AN4759 Table 6 (page 11)
-
 	// disable write protection on RTC
 	RTC->WPR = 0xFF;
 	PWR_CR1 &= ~(1 << 8);
@@ -124,7 +121,6 @@ void RTC_Init(){
 	// exit initialization mode
 	RTC->ICSR &= ~(1 << 7);
 	// poll INITF not specified AN4759 Table 6 (page 11)
-
 	// disable write protection on RTC
 	RTC->WPR = 0xFF;
 	PWR_CR1 &= ~(1 << 8);
