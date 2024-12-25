@@ -72,7 +72,12 @@ void __enable_irq(){
 }
 
 void constructLog(char string[512], Timestamp * timestamp, int type){
+
+	static int lastType;
+
 	if (!timestamp || !string) return;
+
+	if ((type == lastType) && (lastType != 0)) return;
 
     const char *weekday_names[] = {"forbidden", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
     //const char *month_names[] = {"forbidden", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
@@ -85,11 +90,17 @@ void constructLog(char string[512], Timestamp * timestamp, int type){
     	logType = "REQUEST";
     	break;
     case 1:
-    	logType = "VEHICLE STOP, PEDESTRIAN CROSS";
+    	logType = "VEHICLE STOP";
 		break;
     case 2:
-    	logType = "VEHICLE CROSS, PEDESTRIAN STOP";
-		break;
+    	logType = "PEDESTRIAN STOP";
+    	break;
+    case 3:
+    	logType = "VEHICLE CROSS";
+    	break;
+    case 4:
+    	logType = "PEDESTRIAN CROSS";
+    	break;
     }
 
     // Format the string
@@ -105,6 +116,7 @@ void constructLog(char string[512], Timestamp * timestamp, int type){
 			 logType
              );
 
+    lastType = type;
 }
 
 void init(){
@@ -143,14 +155,14 @@ void TIM6_IRQHandler(){
 		temp = 0;
 		brightness_timer++;
 		t++;
-//		if (!blueon) {
-//			blueOn();
-//			blueon = 1;
-//		}
-//		else {
-//			blueOff();
-//			blueon = 0;
-//		}
+		if (!blueon) {
+			blueOn();
+			blueon = 1;
+		}
+		else {
+			blueOff();
+			blueon = 0;
+		}
 		measure_brightness();
 //		RTC_Get(&timestamp);
 	}
@@ -161,6 +173,15 @@ void TIM6_IRQHandler(){
 	}
 	TIM6->SR = 0;
 	getCrossingRequests();
+}
+
+void log(int type){
+	RTC_Get(&timestamp);
+	// convert into date string
+	char log[512] = {0};
+	// send with uart
+	constructLog(log, &timestamp, type);
+	send_message_NB(log);
 }
 
 int main(void)
@@ -178,12 +199,7 @@ int main(void)
 			t = 0;
 			if (isPedestrianInRange() != 0) {
 				currentState = REQUEST;
-				RTC_Get(&timestamp);
-				// convert into date string
-				char log[512] = {0};
-				// send with uart
-				constructLog(log, &timestamp, 0);
-				send_message_NB(log);
+				log(0);
 			}
 			set_frame(red_man, RED, brightness_measurement);
 			changeLight(GREEN, brightness_measurement);
@@ -208,15 +224,18 @@ int main(void)
 			else if (t < getRedToGreenTimestamp()) {
 				// car light red
 				changeLight(RED, brightness_measurement);
+				if (t == getYellowToRedTimestamp()) log(1);
 				if (t < getPedestrianCrossingTimestamp()) {
 					// pedestrian light red
 					set_frame(red_man, RED, brightness_measurement);
 				}
 				else if (t < getAnimationEndingTimestamp()) {
+					if (t == getPedestrianCrossingTimestamp()) log(4);
 					// play animation
-					set_frame(frames[0], GREEN, brightness_measurement);
+					set_frame(frames[temp], GREEN, brightness_measurement);
 				}
 				else if (t < getCarWaitTimestamp()) {
+					if (t == getAnimationEndingTimestamp()) log(2);
 					// no animation, car light red
 					set_frame(red_man, RED, brightness_measurement);
 				}
@@ -224,6 +243,7 @@ int main(void)
 			// t = 15
 			else {
 				currentState = WAITING;
+				log(3);
 			}
 			send_LED();
 			break;

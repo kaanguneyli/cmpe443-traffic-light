@@ -35,7 +35,7 @@ void LPUART1_initialization(void) {
 	LPUART1->ICR |= (1 << 6);
 	LPUART1->CR1 |= 1 << 6;
 }
-TrafficLight GeneralTraficLight = { 3, 1, 10, 1, 8, 1 };
+TrafficLight GeneralTraficLight = { 3, 1, 14, 2, 8, 2 };
 extern Timestamp * ts_ptr;
 
 char TXmessage[512];

@@ -14,6 +14,7 @@
 ../Src/main.c:65:10:getCarWaitTimestamp	4	static
 ../Src/main.c:67:6:__enable_irq	4	static,ignoring_inline_asm
 ../Src/main.c:74:6:constructLog	112	static
-../Src/main.c:110:6:init	8	static
-../Src/main.c:141:6:TIM6_IRQHandler	8	static
-../Src/main.c:166:5:main	520	static,ignoring_inline_asm
+../Src/main.c:122:6:init	8	static
+../Src/main.c:153:6:TIM6_IRQHandler	8	static
+../Src/main.c:178:6:log	528	static
+../Src/main.c:187:5:main	8	static,ignoring_inline_asm
