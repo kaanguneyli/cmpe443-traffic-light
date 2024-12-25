@@ -106,6 +106,7 @@ void DMA1_Channel1_IRQHandler(void) {
 // color: 0 for black, 1 for red, 2 for green
 void set_frame(uint32_t *frame, uint8_t color, uint8_t brightness) {
   int new_brightness = brightness & ~(1);
+  new_brightness |= 1 << 1;
   int current_bit = 0;
   for (int frame_line = 0; frame_line < 8; frame_line++) {
     for (int frame_bit = 0; frame_bit < 32; frame_bit++) {
@@ -115,19 +116,16 @@ void set_frame(uint32_t *frame, uint8_t color, uint8_t brightness) {
                ((led_color == 1) && (color == RED))) &&
               ((new_brightness & (1 << bit)) != 0) &&
               ((frame[frame_line] & (1 << frame_bit)) != 0)) {
-            animation_frame[current_bit] = 12;
+            animation_frame[current_bit] = 13;
           } else {
-            animation_frame[current_bit] = 5;
+            animation_frame[current_bit] = 6;
           }
           current_bit++;
         }
       }
     }
   }
-  for (int i = 256 * 3 * 8; i < frame_data_lenght; i++) {
-    animation_frame[i] = 0;
-  }
-//  send_LED();
+  //  send_LED();
 }
 
 bool send_LED() {
@@ -137,49 +135,51 @@ bool send_LED() {
 }
 
 void changeLight(uint8_t color, uint8_t brightness) {
-  int new_brightness = brightness & ~(1);
+  int new_brightness = brightness & ~(11);
+  new_brightness |= 1 << 2;
   int new_brightness_yellow = (brightness >> 1) & ~(1);
+  new_brightness_yellow |= 1 << 1;
   int i = 256 * 3 * 8;
   for (int led = 0; led < 36; led++) {
     if (((led >= 0 && led < 3) || (led >= 15 && led < 21) ||
          (led >= 33 && led < 36)) &&
         (color == RED)) {
-      for (int bit = 0; bit < 24; bit++) {
+      for (int bit = 23; bit >= 0; bit--) {
         if (bit >= 8 && bit < 16 &&
-            ((new_brightness & (1 << (bit - 8))) != 0)) {
-          animation_frame[i] = 12;
+            ((new_brightness & (1 << (bit % 8))) != 0)) {
+          animation_frame[i] = 13;
         } else {
-          animation_frame[i] = 5;
+          animation_frame[i] = 6;
         }
         i++;
       }
     } else if (((led >= 6 && led < 12) || (led >= 24 && led < 27)) &&
                (color == GREEN)) {
-      for (int bit = 0; bit < 24; bit++) {
-        if (bit < 8 && ((new_brightness & (1 << (bit))) != 0)) {
-          animation_frame[i] = 12;
+      for (int bit = 23; bit >= 0; bit--) {
+        if (bit < 8 && ((new_brightness & (1 << (bit % 8))) != 0)) {
+          animation_frame[i] = 13;
         } else {
-          animation_frame[i] = 5;
+          animation_frame[i] = 6;
         }
         i++;
       }
     } else if (((led >= 3 && led < 6) || (led >= 12 && led < 15) ||
                 (led >= 21 && led < 24) || (led >= 30 && led < 33)) &&
                (color == YELLOW)) {
-      for (int bit = 0; bit < 24; bit++) {
-        if (bit < 16 && ((new_brightness_yellow & (1 << (bit % 8))) != 0)) {
-          animation_frame[i] = 12;
+      for (int bit = 23; bit >= 0; bit--) {
+        if (bit >= 8 && ((new_brightness_yellow & (1 << (bit % 8))) != 0)) {
+          animation_frame[i] = 13;
         } else {
-          animation_frame[i] = 5;
+          animation_frame[i] = 6;
         }
         i++;
       }
     } else {
       for (int bit = 0; bit < 24; bit++) {
-        animation_frame[i] = 5;
+        animation_frame[i] = 6;
         i++;
       }
     }
   }
-//  send_LED();
+  //  send_LED();
 }
